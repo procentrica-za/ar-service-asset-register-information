@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -12,22 +11,19 @@ import (
 func (s *Server) handlegetasset() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Handle Get Asset Has Been Called...")
-		// retrieving the ID of the asset that is requested.
-		getAsset := AssetID{}
-		// convert received JSON payload into the declared struct.
-		err := json.NewDecoder(r.Body).Decode(&getAsset)
-		//check for errors when converting JSON payload into struct.
-		if err != nil {
+		//Get Asset ID from URL
+		assetid := r.URL.Query().Get("assetid")
+
+		//Check if Asset ID provided is null
+		if assetid == "" {
 			w.WriteHeader(500)
-			fmt.Fprintf(w, "Bad JSON provided to export asset")
+			fmt.Fprint(w, "Asset ID not properly provided in URL")
+			fmt.Println("Asset ID not proplery provided in URL")
 			return
 		}
 
-		//create byte array from JSON payload
-		requestByte, _ := json.Marshal(getAsset)
-
 		//post to crud service
-		req, respErr := http.Post("http://"+config.CRUDHost+":"+config.CRUDPort+"/asset", "application/json", bytes.NewBuffer(requestByte))
+		req, respErr := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/asset?assetid=" + assetid)
 
 		//check for response error of 500
 		if respErr != nil {
@@ -37,12 +33,12 @@ func (s *Server) handlegetasset() http.HandlerFunc {
 			return
 		}
 		if req.StatusCode != 200 {
+			w.WriteHeader(500)
 			fmt.Fprint(w, "Request to DB can't be completed...")
 			fmt.Println("Unable to asset export")
 		}
 		if req.StatusCode == 500 {
 			w.WriteHeader(500)
-
 			bodyBytes, err := ioutil.ReadAll(req.Body)
 			if err != nil {
 				log.Fatal(err)
@@ -50,12 +46,6 @@ func (s *Server) handlegetasset() http.HandlerFunc {
 			bodyString := string(bodyBytes)
 			fmt.Fprintf(w, "Request to DB can't be completed..."+bodyString)
 			fmt.Println("Request to DB can't be completed..." + bodyString)
-			return
-		}
-		if err != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, err.Error())
-			fmt.Println("Exportation is not able to be completed by internal error")
 			return
 		}
 
@@ -67,8 +57,7 @@ func (s *Server) handlegetasset() http.HandlerFunc {
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
-
-		err = decoder.Decode(&assetResponse)
+		err := decoder.Decode(&assetResponse)
 		if err != nil {
 			w.WriteHeader(500)
 			fmt.Fprint(w, err.Error())
@@ -93,22 +82,19 @@ func (s *Server) handlegetasset() http.HandlerFunc {
 func (s *Server) handlegetassets() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Handle Get Assets Has Been Called...")
-		getAsset := AssetID{}
-		err := json.NewDecoder(r.Body).Decode(&getAsset)
-		//handle for bad JSON provided
+		//Get Asset ID from URL
+		assettypeid := r.URL.Query().Get("assettypeid")
 
-		if err != nil {
+		//Check if Asset ID provided is null
+		if assettypeid == "" {
 			w.WriteHeader(500)
-			fmt.Fprint(w, err.Error())
-			fmt.Println("Could not read body of request into proper JSON format for getting assets.\n Please check that your data is in the correct format.")
+			fmt.Fprint(w, "Asset ID not properly provided in URL")
+			fmt.Println("Asset ID not proplery provided in URL")
 			return
 		}
 
-		//create byte array from JSON payload
-		requestByte, _ := json.Marshal(getAsset)
-
 		//post to crud service
-		req, respErr := http.Post("http://"+config.CRUDHost+":"+config.CRUDPort+"/assets", "application/json", bytes.NewBuffer(requestByte))
+		req, respErr := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/assets?assettypeid=" + assettypeid)
 
 		//check for response error of 500
 		if respErr != nil {
