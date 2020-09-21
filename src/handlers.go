@@ -49,7 +49,7 @@ func (s *Server) handlegetasset() http.HandlerFunc {
 			return
 		}
 
-		//close the request
+		//close the request.
 		defer req.Body.Close()
 
 		//create new response struct
