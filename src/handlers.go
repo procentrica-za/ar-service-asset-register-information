@@ -136,7 +136,7 @@ func (s *Server) handlegetassets() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get Messages response ")
 			return
 		}
-		//convert struct back to JSON
+		//convert struct back to JSON.
 		js, jserr := json.Marshal(assetsList)
 		if jserr != nil {
 			w.WriteHeader(500)
