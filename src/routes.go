@@ -7,4 +7,8 @@ func (s *Server) routes() {
 
 	//Demo Routes
 	s.router.HandleFunc("/funclocdetails", s.handlegetfunclocCurrentDetails()).Methods("GET")
+	//Demo shadow Routes
+	s.router.HandleFunc("/funclocshadowdetails", s.handlegetfunclocShadowDetails()).Methods("GET")
+	//Demo Location Routes
+	s.router.HandleFunc("/funclocs", s.handleshadowlocations()).Methods("GET")
 }
