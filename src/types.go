@@ -44,6 +44,7 @@ type AssetList struct {
 }
 
 type FunclocDetails struct {
+	ID          string `json:"id"`
 	Description string `json:"description"`
 	Name        string `json:"name"`
 	Latitude    string `json:"latitude"`
@@ -82,6 +83,7 @@ type FunclocAssets struct {
 }
 
 type FuncLocAssetList struct {
+	ID          string          `json:"id"`
 	Description string          `json:"description"`
 	Name        string          `json:"name"`
 	Latitude    string          `json:"latitude"`

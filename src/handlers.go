@@ -246,6 +246,7 @@ func (s *Server) handlegetfunclocCurrentDetails() http.HandlerFunc {
 
 		//create new response struct for JSON list
 		assetsList := FuncLocAssetList{}
+		assetsList.ID = funclocdetails.ID
 		assetsList.Description = funclocdetails.Description
 		assetsList.Name = funclocdetails.Name
 		assetsList.Latitude = funclocdetails.Latitude
@@ -371,6 +372,7 @@ func (s *Server) handlegetfunclocShadowDetails() http.HandlerFunc {
 
 		//create new response struct for JSON list
 		assetsList := FuncLocAssetList{}
+		assetsList.ID = funclocdetails.ID
 		assetsList.Description = funclocdetails.Description
 		assetsList.Name = funclocdetails.Name
 		assetsList.Latitude = funclocdetails.Latitude
