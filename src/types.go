@@ -60,7 +60,7 @@ type FunclocAssets struct {
 	Description                 string `json:"description"`
 	Dimension1Value             string `json:"dimension1value"`
 	Dimension2Value             string `json:"dimension2value"`
-	Dimension3Value             string `json:"dimension3value`
+	Dimension3Value             string `json:"dimension3value"`
 	Dimension4Value             string `json:"dimension4value"`
 	Dimension5Value             string `json:"dimension5value"`
 	Extent                      string `json:"extent"`
