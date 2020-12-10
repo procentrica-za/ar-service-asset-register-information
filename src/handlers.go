@@ -513,8 +513,7 @@ func (s *Server) handleGetNodeFuncLocs() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		nodesList := NodeFuncLocsList{}
-		nodesList.NodeFuncLocs = []NodeFuncLocs{}
+		nodesList := []NodeFuncLocs{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -587,8 +586,7 @@ func (s *Server) handleGetNodeAssets() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		assetsList := NodeAssetsList{}
-		assetsList.NodeAssets = []NodeAssets{}
+		assetsList := []NodeAssets{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -790,8 +788,7 @@ func (s *Server) handlegetFuncLocAssets() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		assetsList := FunclocationAssetsList{}
-		assetsList.Funclocassets = []FunclocationAssets{}
+		assetsList := []FunclocationAssets{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -804,6 +801,86 @@ func (s *Server) handlegetFuncLocAssets() http.HandlerFunc {
 		}
 		//convert struct back to JSON.
 		js, jserr := json.Marshal(assetsList)
+		if jserr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, jserr.Error())
+			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+			return
+		}
+
+		//return success back to Front-End user
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		w.Write(js)
+	}
+}
+
+func (s *Server) handleGetFuncLoc() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Handle Get funcloc Has Been Called...")
+
+		funclocnodeid := r.URL.Query().Get("funclocnodeid")
+		id := r.URL.Query().Get("id")
+
+		//Check if no Node ID was provided in the URL
+
+		if funclocnodeid == "" {
+			w.WriteHeader(500)
+			fmt.Fprint(w, "Functional Location node ID not properly provided in URL")
+			fmt.Println("Functional Location node ID not properly provided in URL")
+			return
+		}
+		if id == "" {
+			w.WriteHeader(500)
+			fmt.Fprint(w, "Functional Location ID not properly provided in URL")
+			fmt.Println("Functional Location ID not properly provided in URL")
+			return
+		}
+
+		//post to crud service
+		req, respErr := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/funcloc?funclocnodeid=" + funclocnodeid + "&id=" + id)
+
+		//check for response error of 500
+		if respErr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, respErr.Error())
+			fmt.Println("Error in communication with CRUD service endpoint for request to location information")
+			return
+		}
+		if req.StatusCode != 200 {
+			w.WriteHeader(req.StatusCode)
+			fmt.Fprint(w, "Request to DB can't be completed...")
+			fmt.Println("Request to DB can't be completed...")
+		}
+		if req.StatusCode == 500 {
+			w.WriteHeader(500)
+			bodyBytes, err := ioutil.ReadAll(req.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+			bodyString := string(bodyBytes)
+			fmt.Fprintf(w, "An internal error has occured whilst trying to get location data"+bodyString)
+			fmt.Println("An internal error has occured whilst trying to get location data" + bodyString)
+			return
+		}
+
+		//close the request
+		defer req.Body.Close()
+
+		//create new response struct for JSON list
+		funcslist := []FuncLoc{}
+
+		//decode request into decoder which converts to the struct
+		decoder := json.NewDecoder(req.Body)
+		err1 := decoder.Decode(&funcslist)
+		if err1 != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err1.Error())
+			fmt.Println("Error occured in decoding get assets response ")
+			return
+		}
+		//convert struct back to JSON.
+		js, jserr := json.Marshal(funcslist)
 		if jserr != nil {
 			w.WriteHeader(500)
 			fmt.Fprint(w, jserr.Error())
