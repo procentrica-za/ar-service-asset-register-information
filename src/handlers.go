@@ -894,3 +894,220 @@ func (s *Server) handleGetFuncLoc() http.HandlerFunc {
 		w.Write(js)
 	}
 }
+
+func (s *Server) handleGetFuncLocDetail() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Handle Get Asset Has Been Called...")
+		//Get Asset ID from URL
+		id := r.URL.Query().Get("id")
+
+		//Check if Asset ID provided is null
+		if id == "" {
+			w.WriteHeader(500)
+			fmt.Fprint(w, "Funcloc ID not properly provided in URL")
+			fmt.Println("Funcloc ID not proplery provided in URL")
+			return
+		}
+
+		//post to crud service
+		req, respErr := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/funclocdetail?id=" + id)
+
+		//check for response error of 500
+		if respErr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, respErr.Error())
+			fmt.Println("Error in communication with CRUD service endpoint for export funcloc")
+			return
+		}
+		if req.StatusCode != 200 {
+			w.WriteHeader(500)
+			fmt.Fprint(w, "Request to DB can't be completed...")
+			fmt.Println("Unable to asset funcloc")
+		}
+		if req.StatusCode == 500 {
+			w.WriteHeader(500)
+			bodyBytes, err := ioutil.ReadAll(req.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+			bodyString := string(bodyBytes)
+			fmt.Fprintf(w, "Request to DB can't be completed..."+bodyString)
+			fmt.Println("Request to DB can't be completed..." + bodyString)
+			return
+		}
+
+		//close the request.
+		defer req.Body.Close()
+
+		//create new response struct
+		var locationResponse FuncLocDetail
+
+		//decode request into decoder which converts to the struct
+		decoder := json.NewDecoder(req.Body)
+		err := decoder.Decode(&locationResponse)
+		if err != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err.Error())
+			fmt.Println("Error occured in decoding asset response")
+			return
+		}
+		js, jserr := json.Marshal(locationResponse)
+		if jserr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, jserr.Error())
+			fmt.Println("Error occured when trying to marshal the response to export asset")
+			return
+		}
+
+		//return back to Front-End user
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		w.Write(js)
+	}
+}
+
+func (s *Server) handleGetFuncLocSpatial() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Handle Get funcloc spatial Has Been Called...")
+
+		id := r.URL.Query().Get("id")
+
+		//Check if no Node ID was provided in the URL
+
+		if id == "" {
+			w.WriteHeader(500)
+			fmt.Fprint(w, "Functional Location ID not properly provided in URL")
+			fmt.Println("Functional Location ID not properly provided in URL")
+			return
+		}
+
+		//post to crud service
+		req, respErr := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/funclocspatial?id=" + id)
+
+		//check for response error of 500
+		if respErr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, respErr.Error())
+			fmt.Println("Error in communication with CRUD service endpoint for request to location information")
+			return
+		}
+		if req.StatusCode != 200 {
+			w.WriteHeader(req.StatusCode)
+			fmt.Fprint(w, "Request to DB can't be completed...")
+			fmt.Println("Request to DB can't be completed...")
+		}
+		if req.StatusCode == 500 {
+			w.WriteHeader(500)
+			bodyBytes, err := ioutil.ReadAll(req.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+			bodyString := string(bodyBytes)
+			fmt.Fprintf(w, "An internal error has occured whilst trying to get location data"+bodyString)
+			fmt.Println("An internal error has occured whilst trying to get location data" + bodyString)
+			return
+		}
+
+		//close the request
+		defer req.Body.Close()
+
+		//create new response struct for JSON list
+		funcslist := []FuncLocSpatial{}
+
+		//decode request into decoder which converts to the struct
+		decoder := json.NewDecoder(req.Body)
+		err1 := decoder.Decode(&funcslist)
+		if err1 != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err1.Error())
+			fmt.Println("Error occured in decoding get assets response ")
+			return
+		}
+		//convert struct back to JSON.
+		js, jserr := json.Marshal(funcslist)
+		if jserr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, jserr.Error())
+			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+			return
+		}
+
+		//return success back to Front-End user
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		w.Write(js)
+	}
+}
+
+func (s *Server) handleGetNodeFuncLocSpatial() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Handle Get Node Func Locs spatial Has Been Called...")
+
+		nodeid := r.URL.Query().Get("funclocnodeid")
+
+		//Check if no Node ID was provided in the URL
+
+		if nodeid == "" {
+			w.WriteHeader(500)
+			fmt.Fprint(w, "Functional Location ID not properly provided in URL")
+			fmt.Println("Functional Location ID not properly provided in URL")
+			return
+		}
+
+		//post to crud service
+		req, respErr := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/nodefunclocspatial?funclocnodeid=" + nodeid)
+
+		//check for response error of 500
+		if respErr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, respErr.Error())
+			fmt.Println("Error in communication with CRUD service endpoint for request to location information")
+			return
+		}
+		if req.StatusCode != 200 {
+			w.WriteHeader(req.StatusCode)
+			fmt.Fprint(w, "Request to DB can't be completed...")
+			fmt.Println("Request to DB can't be completed...")
+		}
+		if req.StatusCode == 500 {
+			w.WriteHeader(500)
+			bodyBytes, err := ioutil.ReadAll(req.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+			bodyString := string(bodyBytes)
+			fmt.Fprintf(w, "An internal error has occured whilst trying to get location data"+bodyString)
+			fmt.Println("An internal error has occured whilst trying to get location data" + bodyString)
+			return
+		}
+
+		//close the request
+		defer req.Body.Close()
+
+		//create new response struct for JSON list
+		nodesList := []NodeFuncLocsSpatial{}
+
+		//decode request into decoder which converts to the struct
+		decoder := json.NewDecoder(req.Body)
+		err1 := decoder.Decode(&nodesList)
+		if err1 != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err1.Error())
+			fmt.Println("Error occured in decoding get location response ")
+			return
+		}
+		//convert struct back to JSON.
+		js, jserr := json.Marshal(nodesList)
+		if jserr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, jserr.Error())
+			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+			return
+		}
+
+		//return success back to Front-End user
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		w.Write(js)
+	}
+}
