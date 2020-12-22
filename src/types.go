@@ -132,13 +132,13 @@ type NodeFuncLocsList struct {
 }
 
 type NodeAssets struct {
-	FuncLocNodeId string `json:"funclocnodeid"`
 	Id            string `json:"id"`
-	Description   string `json:"description"`
+	FuncLocNodeId string `json:"funclocnodeid"`
+	FuncLocID     string `json:"funclocid"`
 	Name          string `json:"name"`
+	Description   string `json:"description"`
 	Lat           string `json:"lat"`
 	Lon           string `json:"lon"`
-	FuncLocID     string `json:"funclocid"`
 }
 
 type NodeAssetsList struct {
@@ -146,7 +146,7 @@ type NodeAssetsList struct {
 }
 
 type Assetdetails struct {
-	ID              string `json:"id"`
+	ID              int    `json:"id"`
 	Type            string `json:"type"`
 	Description     string `json:"description"`
 	ManufactureDate string `json:"manufacturedate"`
@@ -160,7 +160,7 @@ type FlexVals struct {
 }
 
 type AssetDetail struct {
-	ID              string     `json:"id"`
+	ID              int        `json:"id"`
 	Type            string     `json:"type"`
 	Description     string     `json:"description"`
 	ManufactureDate string     `json:"manufacturedate"`
