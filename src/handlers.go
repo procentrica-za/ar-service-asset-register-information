@@ -513,7 +513,8 @@ func (s *Server) handleGetNodeFuncLocs() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		nodesList := []NodeFuncLocs{}
+		nodesList := NodeFuncLocsList{}
+		nodesList.NodeFuncLocs = []NodeFuncLocs{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -586,7 +587,8 @@ func (s *Server) handleGetNodeAssets() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		assetsList := []NodeAssets{}
+		assetsList := NodeAssetsList{}
+		assetsList.NodeAssets = []NodeAssets{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -788,7 +790,8 @@ func (s *Server) handlegetFuncLocAssets() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		assetsList := []FunclocationAssets{}
+		assetsList := FunclocationAssetsList{}
+		assetsList.Funclocassets = []FunclocationAssets{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -868,7 +871,8 @@ func (s *Server) handleGetFuncLoc() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		funcslist := []FuncLoc{}
+		funcslist := FuncLocList{}
+		funcslist.Funclocs = []FuncLoc{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -1012,7 +1016,8 @@ func (s *Server) handleGetFuncLocSpatial() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		funcslist := []FuncLocSpatial{}
+		funcslist := FuncLocSpatialList{}
+		funcslist.FuncLocSpatial = []FuncLocSpatial{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
@@ -1085,7 +1090,8 @@ func (s *Server) handleGetNodeFuncLocSpatial() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		nodesList := []NodeFuncLocsSpatial{}
+		nodesList := NodeFuncLocsSpatialList{}
+		nodesList.NodeFuncLocsSpatial = []NodeFuncLocsSpatial{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
