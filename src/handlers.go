@@ -715,6 +715,25 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		assetsList.ManufactureDate = assetdetails.ManufactureDate
 		assetsList.TakeOnDate = assetdetails.TakeOnDate
 		assetsList.SerialNo = assetdetails.SerialNo
+		assetsList.DerecognitionDate = assetdetails.DerecognitionDate
+		assetsList.DerecognitionValue = assetdetails.DerecognitionValue
+		assetsList.CompatibleUnitID = assetdetails.CompatibleUnitID
+		assetsList.CompatibleUnitName = assetdetails.CompatibleUnitName
+		assetsList.Dimension1Name = assetdetails.Dimension1Name
+		assetsList.Dimension1Description = assetdetails.Dimension1Description
+		assetsList.Dimension1Unit = assetdetails.Dimension1Unit
+		assetsList.Dimension2Name = assetdetails.Dimension2Name
+		assetsList.Dimension2Description = assetdetails.Dimension2Description
+		assetsList.Dimension2Unit = assetdetails.Dimension2Unit
+		assetsList.Dimension3Name = assetdetails.Dimension3Name
+		assetsList.Dimension3Description = assetdetails.Dimension3Description
+		assetsList.Dimension3Unit = assetdetails.Dimension3Unit
+		assetsList.Dimension4Name = assetdetails.Dimension4Name
+		assetsList.Dimension4Description = assetdetails.Dimension4Description
+		assetsList.Dimension4Unit = assetdetails.Dimension4Unit
+		assetsList.Dimension5Name = assetdetails.Dimension5Name
+		assetsList.Dimension5Description = assetdetails.Dimension5Description
+		assetsList.Dimension5Unit = assetdetails.Dimension5Unit
 		assetsList.Flexvals = []FlexVals{}
 
 		//decode request into decoder which converts to the struct
