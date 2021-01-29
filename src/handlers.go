@@ -710,6 +710,7 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		//create new response struct for JSON list
 		assetsList := AssetDetail{}
 		assetsList.ID = assetdetails.ID
+		assetsList.Name = assetdetails.Name
 		assetsList.Type = assetdetails.Type
 		assetsList.TypeFriendly = assetdetails.TypeFriendly
 		assetsList.Description = assetdetails.Description
