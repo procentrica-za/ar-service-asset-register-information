@@ -713,6 +713,12 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		assetsList.Name = assetdetails.Name
 		assetsList.Type = assetdetails.Type
 		assetsList.TypeFriendly = assetdetails.TypeFriendly
+		assetsList.Group = assetdetails.Group
+		assetsList.Category = assetdetails.Category
+		assetsList.SubCategory = assetdetails.SubCategory
+		assetsList.GroupType = assetdetails.GroupType
+		assetsList.AssetType = assetdetails.AssetType
+		assetsList.ComponentType = assetdetails.ComponentType
 		assetsList.Description = assetdetails.Description
 		assetsList.ManufactureDate = assetdetails.ManufactureDate
 		assetsList.TakeOnDate = assetdetails.TakeOnDate
@@ -741,6 +747,12 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		assetsList.Dimension3Value = assetdetails.Dimension3Value
 		assetsList.Dimension4Value = assetdetails.Dimension4Value
 		assetsList.Dimension5Value = assetdetails.Dimension5Value
+		assetsList.Extent = assetdetails.Extent
+		assetsList.Rulyears = assetdetails.Rulyears
+		assetsList.Crc = assetdetails.Crc
+		assetsList.Drc = assetdetails.Drc
+		assetsList.Cost = assetdetails.Cost
+		assetsList.CarryingValue = assetdetails.CarryingValue
 		assetsList.Flexvals = []FlexVals{}
 
 		//decode request into decoder which converts to the struct
