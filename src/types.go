@@ -139,6 +139,17 @@ type NodeAssets struct {
 	Description   string `json:"description,omitempty"`
 	Lat           string `json:"lat,omitempty"`
 	Lon           string `json:"lon,omitempty"`
+	Cuname        string `json:"cuname,omitempty"`
+	Typename      string `json:"typename,omitempty"`
+	SerialNo      string `json:"serialno,omitempty"`
+	Extent        string `json:"extent,omitempty"`
+	Crc           string `json:"crc,omitempty"`
+	Drc           string `json:"drc,omitempty"`
+	Cost          string `json:"cost,omitempty"`
+	CarryingValue string `json:"carryingvalue,omitempty"`
+	TakeOnDate    string `json:"takeondate,omitempty"`
+	Rulyears      string `json:"rulyears,omitempty"`
+	TypeFriendly  string `json:"typefriendly,omitempty"`
 }
 
 type NodeAssetsList struct {
@@ -150,12 +161,6 @@ type Assetdetails struct {
 	Name                  string `json:"name,omitempty"`
 	Type                  string `json:"type,omitempty"`
 	TypeFriendly          string `json:"typefriendly,omitempty"`
-	Group                 string `json:"group,omitempty"`
-	Category              string `json:"category,omitempty"`
-	SubCategory           string `json:"subcategory,omitempty"`
-	GroupType             string `json:"grouptype,omitempty"`
-	AssetType             string `json:"assettype,omitempty"`
-	ComponentType         string `json:"componenttype,omitempty"`
 	Description           string `json:"description,omitempty"`
 	ManufactureDate       string `json:"manufacturedate,omitempty"`
 	TakeOnDate            string `json:"takeondate,omitempty"`
@@ -193,8 +198,16 @@ type Assetdetails struct {
 }
 
 type FlexVals struct {
-	Name  string `json:"name,omitempty"`
-	Value string `json:"value,omitempty"`
+	Category     string `json:"category,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Value        string `json:"value,omitempty"`
+	DisplayOrder string `json:"displayorder,omitempty"`
+}
+
+type Levels struct {
+	TypeLevelName string `json:"typelevelname,omitempty"`
+	Level         int    `json:"level,omitempty"`
+	Name          string `json:"name,omitempty"`
 }
 
 type AssetDetail struct {
@@ -243,6 +256,7 @@ type AssetDetail struct {
 	Cost                  string     `json:"cost,omitempty"`
 	CarryingValue         string     `json:"carryingvalue,omitempty"`
 	Flexvals              []FlexVals `json:"flexvalues"`
+	ALevels               []Levels   `json:"levels"`
 }
 
 type FunclocationAssets struct {

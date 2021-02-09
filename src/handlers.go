@@ -674,7 +674,7 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 			return
 		}
 
-		//send CRUD response to email service
+		//send CRUD response to flexval service
 		req1, respErr1 := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/assetflexval?id=" + id)
 
 		fmt.Println("Sent to crud to get flex val service")
@@ -713,12 +713,6 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		assetsList.Name = assetdetails.Name
 		assetsList.Type = assetdetails.Type
 		assetsList.TypeFriendly = assetdetails.TypeFriendly
-		assetsList.Group = assetdetails.Group
-		assetsList.Category = assetdetails.Category
-		assetsList.SubCategory = assetdetails.SubCategory
-		assetsList.GroupType = assetdetails.GroupType
-		assetsList.AssetType = assetdetails.AssetType
-		assetsList.ComponentType = assetdetails.ComponentType
 		assetsList.Description = assetdetails.Description
 		assetsList.ManufactureDate = assetdetails.ManufactureDate
 		assetsList.TakeOnDate = assetdetails.TakeOnDate
@@ -754,6 +748,7 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		assetsList.Cost = assetdetails.Cost
 		assetsList.CarryingValue = assetdetails.CarryingValue
 		assetsList.Flexvals = []FlexVals{}
+		assetsList.ALevels = []Levels{}
 
 		//decode request into decoder which converts to the struct
 		decoder1 := json.NewDecoder(req1.Body)
@@ -764,6 +759,48 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get flex vals response ")
 			return
 		}
+
+		//send CRUD response to flexval service
+		req2, respErr2 := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/assetlevel?id=" + id)
+
+		fmt.Println("Sent to crud to get asset level service")
+		//check for response error of 500
+		if respErr2 != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, respErr2.Error())
+			fmt.Println("Error received from text service->" + respErr2.Error())
+			return
+		}
+		if req2.StatusCode != 200 {
+			w.WriteHeader(req2.StatusCode)
+			fmt.Fprint(w, "Request to CRUD to get asset information can't be completed...")
+			fmt.Println("Unable to process asset asset information")
+			return
+		}
+		if req2.StatusCode == 500 {
+			w.WriteHeader(500)
+
+			bodyBytes2, err2 := ioutil.ReadAll(req2.Body)
+			if err2 != nil {
+				log.Fatal(err2)
+			}
+			bodyString := string(bodyBytes2)
+			fmt.Fprintf(w, "Request to CRUD to get asset information can't be completed..."+bodyString)
+			fmt.Println("Unable to process asset asset information..." + bodyString)
+			return
+		}
+
+		//decode request into decoder which converts to the struct
+		decoder2 := json.NewDecoder(req2.Body)
+		err2 := decoder2.Decode(&assetsList)
+		if err2 != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err2.Error())
+			fmt.Println("Error occured in decoding get levels response ")
+			return
+		}
+		//close the request
+
 		//convert struct back to JSON.
 		js, jserr := json.Marshal(assetsList)
 		if jserr != nil {
