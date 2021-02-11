@@ -600,9 +600,12 @@ func (s *Server) handleGetNodeAssets() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get assets response ")
 			return
 		}
-		// create header
-		w.WriteHeader(200)
+
+		//return success back to Front-End user
+		w.Header().Add("Accept-Charset", "utf-8")
 		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		w.WriteHeader(200)
 		// Gzip data
 		gz := gzip.NewWriter(w)
 		json.NewEncoder(gz).Encode(assetsList)
