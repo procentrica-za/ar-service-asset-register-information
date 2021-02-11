@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -608,10 +609,15 @@ func (s *Server) handleGetNodeAssets() http.HandlerFunc {
 			return
 		}
 
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
+		// create header
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
 		w.WriteHeader(200)
-		w.Write(js)
+		// Gzip data
+		gz := gzip.NewWriter(w)
+		json.NewEncoder(gz).Encode(js)
+		gz.Close()
 	}
 }
 
