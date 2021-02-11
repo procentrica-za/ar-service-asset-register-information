@@ -600,22 +600,12 @@ func (s *Server) handleGetNodeAssets() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get assets response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(assetsList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
-			return
-		}
-
 		// create header
-		w.Header().Add("Accept-Charset", "utf-8")
+		w.WriteHeader(200)
 		w.Header().Add("Content-Type", "application/json")
-		w.Header().Set("Content-Encoding", "gzip")
 		// Gzip data
 		gz := gzip.NewWriter(w)
-		json.NewEncoder(gz).Encode(js)
+		json.NewEncoder(gz).Encode(assetsList)
 		gz.Close()
 	}
 }
