@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"runtime"
 	"strings"
 
 	"github.com/gorilla/mux"
@@ -32,7 +31,6 @@ func CreateConfig() Config {
 	return conf
 }
 func main() {
-	runtime.GOMAXPROCS(8)
 	server := Server{
 		router: mux.NewRouter(),
 	}
