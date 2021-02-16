@@ -747,6 +747,7 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		assetsList.Drc = assetdetails.Drc
 		assetsList.Cost = assetdetails.Cost
 		assetsList.CarryingValue = assetdetails.CarryingValue
+		assetsList.Size = assetdetails.Size
 		assetsList.Flexvals = []FlexVals{}
 		assetsList.ALevels = []Levels{}
 
