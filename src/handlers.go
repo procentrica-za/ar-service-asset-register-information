@@ -826,7 +826,7 @@ func (s *Server) handlegetFuncLocAssets() http.HandlerFunc {
 
 		funclocid := r.URL.Query().Get("funclocid")
 
-		//Check if no Email address was provided in the URL.
+		//Check if no Email address was provided in the URL
 
 		if funclocid == "" {
 			w.WriteHeader(500)
