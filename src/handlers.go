@@ -866,8 +866,8 @@ func (s *Server) handlegetFuncLocAssets() http.HandlerFunc {
 		defer req.Body.Close()
 
 		//create new response struct for JSON list
-		assetsList := NodeAssetsList{}
-		assetsList.NodeAssets = []NodeAssets{}
+		assetsList := FunclocationAssetsList{}
+		assetsList.Funclocassets = []FunclocationAssets{}
 
 		//decode request into decoder which converts to the struct
 		decoder := json.NewDecoder(req.Body)
