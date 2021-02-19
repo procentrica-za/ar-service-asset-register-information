@@ -142,7 +142,7 @@ type NodeAssets struct {
 	Cuname        string  `json:"cuname,omitempty"`
 	Typename      string  `json:"typename,omitempty"`
 	SerialNo      string  `json:"serialno,omitempty"`
-	Extent        string  `json:"extent,omitempty"`
+	Extent        float32 `json:"extent,omitempty"`
 	Crc           float32 `json:"crc,omitempty"`
 	Drc           float32 `json:"drc,omitempty"`
 	Cost          float32 `json:"cost,omitempty"`
@@ -266,7 +266,7 @@ type FunclocationAssets struct {
 	Cuname        string  `json:"cuname,omitempty"`
 	Typename      string  `json:"typename,omitempty"`
 	SerialNo      string  `json:"serialno,omitempty"`
-	Extent        string  `json:"extent,omitempty"`
+	Extent        float32 `json:"extent,omitempty"`
 	Crc           float32 `json:"crc,omitempty"`
 	Drc           float32 `json:"drc,omitempty"`
 	Cost          float32 `json:"cost,omitempty"`
