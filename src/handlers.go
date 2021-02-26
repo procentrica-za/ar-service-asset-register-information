@@ -65,18 +65,18 @@ func (s *Server) handlegetasset() http.HandlerFunc {
 			fmt.Println("Error occured in decoding asset response")
 			return
 		}
-		js, jserr := json.Marshal(assetResponse)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the response to export asset")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(assetResponse)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -137,19 +137,18 @@ func (s *Server) handlegetassets() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get Messages response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(assetsList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(assetsList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -263,19 +262,18 @@ func (s *Server) handlegetfunclocCurrentDetails() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get Messages response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(assetsList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(assetsList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -389,19 +387,18 @@ func (s *Server) handlegetfunclocShadowDetails() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get Messages response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(assetsList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(assetsList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -452,19 +449,18 @@ func (s *Server) handleshadowlocations() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get Messages response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(locationsList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(locationsList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -526,19 +522,18 @@ func (s *Server) handleGetNodeFuncLocs() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get location response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(nodesList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(nodesList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -801,20 +796,20 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 			return
 		}
 		//close the request
-
+		defer req2.Body.Close()
 		//convert struct back to JSON.
-		js, jserr := json.Marshal(assetsList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err3 := json.NewEncoder(gz).Encode(assetsList)
+		if err3 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -878,19 +873,18 @@ func (s *Server) handlegetFuncLocAssets() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get FuncLocAssets response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(assetsList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(assetsList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -959,19 +953,18 @@ func (s *Server) handleGetFuncLoc() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get assets response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(funcslist)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(funcslist)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -1031,18 +1024,18 @@ func (s *Server) handleGetFuncLocDetail() http.HandlerFunc {
 			fmt.Println("Error occured in decoding asset response")
 			return
 		}
-		js, jserr := json.Marshal(locationResponse)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the response to export asset")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(locationResponse)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -1104,19 +1097,18 @@ func (s *Server) handleGetFuncLocSpatial() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get assets response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(funcslist)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(funcslist)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -1178,19 +1170,18 @@ func (s *Server) handleGetNodeFuncLocSpatial() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get location response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(nodesList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(nodesList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
 
@@ -1241,18 +1232,17 @@ func (s *Server) handleGetNodeHierarchyFlattened() http.HandlerFunc {
 			fmt.Println("Error occured in decoding get location response ")
 			return
 		}
-		//convert struct back to JSON.
-		js, jserr := json.Marshal(nodesList)
-		if jserr != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, jserr.Error())
-			fmt.Println("Error occured when trying to marshal the decoded response into specified JSON format!")
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(nodesList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
 			return
 		}
-
-		//return success back to Front-End user
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(200)
-		w.Write(js)
+		gz.Close()
+		return
 	}
 }
