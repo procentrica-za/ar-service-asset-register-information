@@ -29,4 +29,6 @@ func (s *Server) routes() {
 	s.router.HandleFunc("/nodefunclocspatial", s.handleGetNodeFuncLocSpatial()).Methods("GET")
 	//Get Node Heirarchy Flattened
 	s.router.HandleFunc("/nodehierarchyflattened", s.handleGetNodeHierarchyFlattened()).Methods("GET")
+	//Get Node Heirarchy Flattened Filtered
+	s.router.HandleFunc("/nodehierarchyfiltered", s.handleGetNodeHierarchyFlattenedFiltered()).Methods("POST")
 }
