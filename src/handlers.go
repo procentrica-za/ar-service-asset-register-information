@@ -1411,3 +1411,85 @@ func (s *Server) handleGetNodeAssetsFiltered() http.HandlerFunc {
 		return
 	}
 }
+
+func (s *Server) handlegetFuncLocAssetsFiltered() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Handle Get Funcloc Assets Filtered Has Been Called...")
+		///get JSON payload
+		filterparams := FlattenedHierarchyFilter{}
+		err := json.NewDecoder(r.Body).Decode(&filterparams)
+
+		//handle for bad JSON provided
+		if err != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err.Error())
+			fmt.Println("Error with hierarchy filter parameters")
+			return
+		}
+		//create byte array from JSON payload
+		requestByte, _ := json.Marshal(filterparams)
+
+		//post to crud service
+		req, respErr := http.Post("http://"+config.CRUDHost+":"+config.CRUDPort+"/funclocassetsfiltered", "application/json", bytes.NewBuffer(requestByte))
+		//check for response error of 500
+		if respErr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, respErr.Error())
+			fmt.Println("Error in communication with CRUD service endpoint for request to retrieve funclocassets filtered.")
+			return
+		}
+
+		//check for response error of 500
+		if respErr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, respErr.Error())
+			fmt.Println("Error in communication with CRUD service endpoint for request to get funclocassets filtered")
+			return
+		}
+		if req.StatusCode != 200 {
+			w.WriteHeader(req.StatusCode)
+			fmt.Fprint(w, "Request to DB can't be completed...")
+			fmt.Println("Request to DB can't be completed...")
+		}
+		if req.StatusCode == 500 {
+			w.WriteHeader(500)
+			bodyBytes, err := ioutil.ReadAll(req.Body)
+			if err != nil {
+				log.Fatal(err)
+			}
+			bodyString := string(bodyBytes)
+			fmt.Fprintf(w, "An internal error has occured whilst trying to get funcloc assets filtered"+bodyString)
+			fmt.Println("An internal error has occured whilst trying to get funcloc assets filtered" + bodyString)
+			return
+		}
+
+		//close the request
+		defer req.Body.Close()
+
+		//create new response struct for JSON list
+		assetsList := FunclocationAssetsList{}
+		assetsList.Funclocassets = []FunclocationAssets{}
+
+		//decode request into decoder which converts to the struct
+		decoder := json.NewDecoder(req.Body)
+		err1 := decoder.Decode(&assetsList)
+		if err1 != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err1.Error())
+			fmt.Println("Error occured in decoding get location response ")
+			return
+		}
+		w.Header().Add("Accept-Charset", "utf-8")
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		err2 := json.NewEncoder(gz).Encode(assetsList)
+		if err2 != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(`{"error": "Error processing action"}`))
+			return
+		}
+		gz.Close()
+		return
+	}
+}
