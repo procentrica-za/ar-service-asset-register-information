@@ -703,39 +703,6 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		//close the request
 		defer req1.Body.Close()
 
-		//send CRUD response to flexval service
-		req2, respErr1 := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/assetobservationflexval?id=" + id)
-
-		fmt.Println("Sent to crud to get flex val service")
-		//check for response error of 500
-		if respErr1 != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, respErr1.Error())
-			fmt.Println("Error received from text service->" + respErr1.Error())
-			return
-		}
-		if req2.StatusCode != 200 {
-			w.WriteHeader(req2.StatusCode)
-			fmt.Fprint(w, "Request to CRUD to get asset information can't be completed...")
-			fmt.Println("Unable to process asset asset information")
-			return
-		}
-		if req2.StatusCode == 500 {
-			w.WriteHeader(500)
-
-			bodyBytes1, err1 := ioutil.ReadAll(req2.Body)
-			if err1 != nil {
-				log.Fatal(err1)
-			}
-			bodyString := string(bodyBytes1)
-			fmt.Fprintf(w, "Request to CRUD to get asset information can't be completed..."+bodyString)
-			fmt.Println("Unable to process asset asset information..." + bodyString)
-			return
-		}
-
-		//close the request
-		defer req2.Body.Close()
-
 		//create new response struct for JSON list
 		assetsList := AssetDetail{}
 		assetsList.ID = assetdetails.ID
@@ -790,16 +757,6 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 			return
 		}
 
-		//decode request into decoder which converts to the struct
-		decoder2 := json.NewDecoder(req2.Body)
-		err2 := decoder2.Decode(&assetsList)
-		if err2 != nil {
-			w.WriteHeader(500)
-			fmt.Fprint(w, err1.Error())
-			fmt.Println("Error occured in decoding get flex vals response ")
-			return
-		}
-
 		//send CRUD response to flexval service
 		req3, respErr2 := http.Get("http://" + config.CRUDHost + ":" + config.CRUDPort + "/assetlevel?id=" + id)
 
@@ -835,7 +792,7 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		err3 := decoder3.Decode(&assetsList)
 		if err3 != nil {
 			w.WriteHeader(500)
-			fmt.Fprint(w, err2.Error())
+			fmt.Fprint(w, err3.Error())
 			fmt.Println("Error occured in decoding get levels response ")
 			return
 		}
