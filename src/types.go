@@ -210,6 +210,7 @@ type FlexVals struct {
 	Isunique     bool   `json:"isunique,omitempty"`
 	Unit         string `json:"unit,omitempty"`
 	Lookupvals   string `json:"lookupvals,omitempty"`
+	DateAdded    string `json:"timestamp,omitempty"`
 }
 
 type Levels struct {
