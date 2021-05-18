@@ -210,6 +210,19 @@ type FlexVals struct {
 	Isunique     bool   `json:"isunique,omitempty"`
 	Unit         string `json:"unit,omitempty"`
 	Lookupvals   string `json:"lookupvals,omitempty"`
+}
+
+type ObFlexVals struct {
+	Category     string `json:"category,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Value        string `json:"value,omitempty"`
+	DisplayOrder string `json:"displayorder,omitempty"`
+	Flddefname   string `json:"flddefname,omitempty"`
+	Datatype     string `json:"datatype,omitempty"`
+	Controltype  string `json:"controltype,omitempty"`
+	Isunique     bool   `json:"isunique,omitempty"`
+	Unit         string `json:"unit,omitempty"`
+	Lookupvals   string `json:"lookupvals,omitempty"`
 	DateAdded    string `json:"timestamp,omitempty"`
 }
 
@@ -220,47 +233,48 @@ type Levels struct {
 }
 
 type AssetDetail struct {
-	ID                    string     `json:"id,omitempty"`
-	Name                  string     `json:"name,omitempty"`
-	Type                  string     `json:"type,omitempty"`
-	TypeFriendly          string     `json:"typefriendly,omitempty"`
-	Description           string     `json:"description,omitempty"`
-	ManufactureDate       string     `json:"manufacturedate,omitempty"`
-	TakeOnDate            string     `json:"takeondate,omitempty"`
-	SerialNo              string     `json:"serialno,omitempty"`
-	DerecognitionDate     string     `json:"derecognitiondate,omitempty"`
-	DerecognitionValue    string     `json:"derecognitionvalue,omitempty"`
-	CompatibleUnitID      string     `json:"compatibleunitid,omitempty"`
-	CompatibleUnitName    string     `json:"compatibleunitname,omitempty"`
-	Dimension1Name        string     `json:"dimension1name,omitempty"`
-	Dimension1Description string     `json:"dimension1description,omitempty"`
-	Dimension1Unit        string     `json:"dimension1unit,omitempty"`
-	Dimension2Name        string     `json:"dimension2name,omitempty"`
-	Dimension2Description string     `json:"dimension2description,omitempty"`
-	Dimension2Unit        string     `json:"dimension2unit,omitempty"`
-	Dimension3Name        string     `json:"dimension3name,omitempty"`
-	Dimension3Description string     `json:"dimension3description,omitempty"`
-	Dimension3Unit        string     `json:"dimension3unit,omitempty"`
-	Dimension4Name        string     `json:"dimension4name,omitempty"`
-	Dimension4Description string     `json:"dimension4description,omitempty"`
-	Dimension4Unit        string     `json:"dimension4unit,omitempty"`
-	Dimension5Name        string     `json:"dimension5name,omitempty"`
-	Dimension5Description string     `json:"dimension5description,omitempty"`
-	Dimension5Unit        string     `json:"dimension5unit,omitempty"`
-	Dimension1Value       float32    `json:"dimension1value,omitempty"`
-	Dimension2Value       float32    `json:"dimension2value,omitempty"`
-	Dimension3Value       float32    `json:"dimension3value,omitempty"`
-	Dimension4Value       float32    `json:"dimension4value,omitempty"`
-	Dimension5Value       float32    `json:"dimension5value,omitempty"`
-	Extent                float32    `json:"extent,omitempty"`
-	Rulyears              float32    `json:"rulyears,omitempty"`
-	Crc                   float32    `json:"crc,omitempty"`
-	Drc                   float32    `json:"drc,omitempty"`
-	Cost                  float32    `json:"cost,omitempty"`
-	CarryingValue         float32    `json:"carryingvalue,omitempty"`
-	Size                  float32    `json:"size,omitempty"`
-	Flexvals              []FlexVals `json:"flexvalues"`
-	ALevels               []Levels   `json:"levels"`
+	ID                    string       `json:"id,omitempty"`
+	Name                  string       `json:"name,omitempty"`
+	Type                  string       `json:"type,omitempty"`
+	TypeFriendly          string       `json:"typefriendly,omitempty"`
+	Description           string       `json:"description,omitempty"`
+	ManufactureDate       string       `json:"manufacturedate,omitempty"`
+	TakeOnDate            string       `json:"takeondate,omitempty"`
+	SerialNo              string       `json:"serialno,omitempty"`
+	DerecognitionDate     string       `json:"derecognitiondate,omitempty"`
+	DerecognitionValue    string       `json:"derecognitionvalue,omitempty"`
+	CompatibleUnitID      string       `json:"compatibleunitid,omitempty"`
+	CompatibleUnitName    string       `json:"compatibleunitname,omitempty"`
+	Dimension1Name        string       `json:"dimension1name,omitempty"`
+	Dimension1Description string       `json:"dimension1description,omitempty"`
+	Dimension1Unit        string       `json:"dimension1unit,omitempty"`
+	Dimension2Name        string       `json:"dimension2name,omitempty"`
+	Dimension2Description string       `json:"dimension2description,omitempty"`
+	Dimension2Unit        string       `json:"dimension2unit,omitempty"`
+	Dimension3Name        string       `json:"dimension3name,omitempty"`
+	Dimension3Description string       `json:"dimension3description,omitempty"`
+	Dimension3Unit        string       `json:"dimension3unit,omitempty"`
+	Dimension4Name        string       `json:"dimension4name,omitempty"`
+	Dimension4Description string       `json:"dimension4description,omitempty"`
+	Dimension4Unit        string       `json:"dimension4unit,omitempty"`
+	Dimension5Name        string       `json:"dimension5name,omitempty"`
+	Dimension5Description string       `json:"dimension5description,omitempty"`
+	Dimension5Unit        string       `json:"dimension5unit,omitempty"`
+	Dimension1Value       float32      `json:"dimension1value,omitempty"`
+	Dimension2Value       float32      `json:"dimension2value,omitempty"`
+	Dimension3Value       float32      `json:"dimension3value,omitempty"`
+	Dimension4Value       float32      `json:"dimension4value,omitempty"`
+	Dimension5Value       float32      `json:"dimension5value,omitempty"`
+	Extent                float32      `json:"extent,omitempty"`
+	Rulyears              float32      `json:"rulyears,omitempty"`
+	Crc                   float32      `json:"crc,omitempty"`
+	Drc                   float32      `json:"drc,omitempty"`
+	Cost                  float32      `json:"cost,omitempty"`
+	CarryingValue         float32      `json:"carryingvalue,omitempty"`
+	Size                  float32      `json:"size,omitempty"`
+	Flexvals              []FlexVals   `json:"flexvalues,omitempty"`
+	ObservationFlexvals   []ObFlexVals `json:"observationvalues,omitempty"`
+	ALevels               []Levels     `json:"levels"`
 }
 
 type FunclocationAssets struct {

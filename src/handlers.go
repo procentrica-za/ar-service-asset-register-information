@@ -745,6 +745,7 @@ func (s *Server) handleGetAssetDetail() http.HandlerFunc {
 		assetsList.CarryingValue = assetdetails.CarryingValue
 		assetsList.Size = assetdetails.Size
 		assetsList.Flexvals = []FlexVals{}
+		assetsList.ObservationFlexvals = []ObFlexVals{}
 		assetsList.ALevels = []Levels{}
 
 		//decode request into decoder which converts to the struct
