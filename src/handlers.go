@@ -1658,3 +1658,66 @@ func (s *Server) handleGetNodeFuncLocSpatialFiltered() http.HandlerFunc {
 		return
 	}
 }
+
+func (s *Server) handleUpdate() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println(" Handle  Update Has Been Called...")
+		//get JSON payload
+		update := Update{}
+		err := json.NewDecoder(r.Body).Decode(&update)
+
+		//handle for bad JSON provided
+		if err != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err.Error())
+			fmt.Println("Error with Update Json")
+			return
+		}
+
+		client := &http.Client{}
+
+		//create byte array from JSON payload
+		requestByte, _ := json.Marshal(update)
+
+		//put to crud service
+		req, err := http.NewRequest("PUT", "http://"+config.CRUDHost+":"+config.CRUDPort+"/update", bytes.NewBuffer(requestByte))
+		if err != nil {
+			fmt.Fprint(w, err.Error())
+			fmt.Println("Error in communication with CRUD service endpoint for request to update ")
+		}
+
+		// Fetch Request
+		resp, err := client.Do(req)
+		if err != nil {
+			fmt.Fprint(w, err.Error())
+			return
+		}
+
+		//close the request
+		defer resp.Body.Close()
+
+		//create new response struct
+		updateResponse := []toAssetRegisterResult{}
+		decoder := json.NewDecoder(resp.Body)
+		err = decoder.Decode(&updateResponse)
+		if err != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, err.Error())
+			return
+		}
+
+		//convert struct back to JSON
+		js, jserr := json.Marshal(updateResponse)
+		if jserr != nil {
+			w.WriteHeader(500)
+			fmt.Fprint(w, jserr.Error())
+			fmt.Println("Error occured when trying to marshal the response to update item")
+			return
+		}
+
+		//return back to Front-End user
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(200)
+		w.Write(js)
+	}
+}

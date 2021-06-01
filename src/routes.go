@@ -39,4 +39,6 @@ func (s *Server) routes() {
 	s.router.HandleFunc("/nodefunclocsfiltered", s.handleGetNodeFuncLocsFiltered()).Methods("POST")
 	//Get NodeFunclocsSpatial filtered
 	s.router.HandleFunc("/nodefunclocspatialfiltered", s.handleGetNodeFuncLocSpatialFiltered()).Methods("POST")
+	//Maintenence endpoints
+	s.router.HandleFunc("/update", s.handleUpdate()).Methods("PUT")
 }
